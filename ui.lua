@@ -165,7 +165,7 @@ function Library:MakeDraggable(Instance, Cutoff)
     Instance.Active = true;
 
     Instance.InputBegan:Connect(function(Input)
-        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
             local ObjPos = Vector2.new(
                 Mouse.X - Instance.AbsolutePosition.X,
                 Mouse.Y - Instance.AbsolutePosition.Y
@@ -175,7 +175,8 @@ function Library:MakeDraggable(Instance, Cutoff)
                 return;
             end;
 
-            while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
+            -- Support both mouse and touch
+            while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) or Input.UserInputState == Enum.UserInputState.Change do
                 Instance.Position = UDim2.new(
                     0,
                     Mouse.X - ObjPos.X + (Instance.Size.X.Offset * Instance.AnchorPoint.X),
@@ -2980,6 +2981,45 @@ function Library:CreateWindow(...)
     })
 
     Library:MakeDraggable(Outer, 25);
+
+    -- Mobile toggle button (only show on mobile)
+    if IsMobile then
+        local ToggleButton = Library:Create('TextButton', {
+            AnchorPoint = Vector2.new(0, 0.5);
+            BackgroundColor3 = Library.AccentColor;
+            BorderColor3 = Library.OutlineColor;
+            BorderSizePixel = 2;
+            Position = UDim2.new(0, 10, 0.5, 0);
+            Size = UDim2.fromOffset(50, 50);
+            Text = '☰';
+            TextColor3 = Color3.new(1, 1, 1);
+            TextSize = 24;
+            Font = Enum.Font.GothamBold;
+            ZIndex = 100;
+            Parent = ScreenGui;
+        });
+
+        Library:Create('UICorner', {
+            CornerRadius = UDim.new(0, 8);
+            Parent = ToggleButton;
+        });
+
+        Library:Create('UIStroke', {
+            Color = Library.AccentColor;
+            Thickness = 2;
+            Parent = ToggleButton;
+        });
+
+        Library:AddToRegistry(ToggleButton, {
+            BackgroundColor3 = 'AccentColor';
+            BorderColor3 = 'OutlineColor';
+        });
+
+        ToggleButton.MouseButton1Click:Connect(function()
+            Outer.Visible = not Outer.Visible;
+            ToggleButton.Text = Outer.Visible and '✕' or '☰';
+        end);
+    end
 
     local Inner = Library:Create('Frame', {
         BackgroundColor3 = Library.MainColor;
