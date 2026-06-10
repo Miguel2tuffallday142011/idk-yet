@@ -2970,6 +2970,15 @@ function Library:CreateWindow(...)
         Parent = ScreenGui;
     });
 
+    -- Mobile scaling - make UI smaller on mobile devices
+    local IsMobile = (InputService.TouchEnabled and not InputService.MouseEnabled) or 
+                     (InputService:GetPlatform() == Enum.Platform.Android or InputService:GetPlatform() == Enum.Platform.IOS)
+    
+    local MobileScale = Library:Create('UIScale', {
+        Scale = IsMobile and 0.65 or 1,
+        Parent = Outer
+    })
+
     Library:MakeDraggable(Outer, 25);
 
     local Inner = Library:Create('Frame', {
