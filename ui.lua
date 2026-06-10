@@ -3018,8 +3018,8 @@ function Library:CreateWindow(...)
         local ToggleButton = Library:Create('TextButton', {
             AnchorPoint = Vector2.new(0, 0.5);
             BackgroundColor3 = Library.AccentColor;
-            BorderColor3 = Library.OutlineColor;
-            BorderSizePixel = 2;
+            BorderColor3 = Color3.new(0, 0, 0);
+            BorderSizePixel = 0;
             Position = UDim2.new(0, 10, 0.5, 0);
             Size = UDim2.fromOffset(50, 50);
             Text = 'C';
@@ -3043,27 +3043,26 @@ function Library:CreateWindow(...)
 
         Library:AddToRegistry(ToggleButton, {
             BackgroundColor3 = 'AccentColor';
-            BorderColor3 = 'OutlineColor';
         });
 
-        -- Debounce to prevent flickering
-        local debounce = false
+        -- Debounce to prevent flickering - use tick() instead of task.wait()
+        local lastClickTime = 0
+        local debounceDelay = 0.3
+        
         local function toggleUI()
-            if debounce then return end
-            debounce = true
+            local currentTime = tick()
+            if currentTime - lastClickTime < debounceDelay then 
+                return 
+            end
+            lastClickTime = currentTime
             
             Outer.Visible = not Outer.Visible;
-            ToggleButton.Text = Outer.Visible and '✕' or 'C';
-            
-            task.wait(0.3)
-            debounce = false
+            -- Always keep button as 'C'
         end
 
-        ToggleButton.MouseButton1Click:Connect(toggleUI);
-        
-        -- Also support touch input
+        -- Use InputBegan for both mouse and touch
         ToggleButton.InputBegan:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.Touch then
+            if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
                 toggleUI()
             end;
         end);
