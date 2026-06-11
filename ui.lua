@@ -7933,16 +7933,6 @@ function Library:CreateWindow(WindowInfo)
                 Text = "",
                 Parent = Tabs,
             })
-            
-            -- Add active indicator for KeyTab too
-            local ActiveIndicator = New("Frame", {
-                BackgroundColor3 = "AccentColor",
-                Size = UDim2.new(1, 0, 0, 2),
-                Position = UDim2.new(0, 0, 0, 0),
-                Visible = false,
-                Parent = TabButton,
-            })
-            
             local ButtonPadding = New("UIPadding", {
                 PaddingBottom = UDim.new(0, IsCompact and 6 or 11),
                 PaddingLeft = UDim.new(0, IsCompact and 6 or 12),
@@ -7980,7 +7970,6 @@ function Library:CreateWindow(WindowInfo)
                 Label = TabLabel,
                 Padding = ButtonPadding,
                 Icon = TabIcon,
-                Indicator = ActiveIndicator, -- Add indicator to KeyTab too
             })
 
             --// Tab Container \\--
@@ -8116,10 +8105,6 @@ function Library:CreateWindow(WindowInfo)
                     ImageTransparency = 0,
                 }):Play()
             end
-            
-            -- Show indicator for KeyTab
-            ActiveIndicator.Visible = true
-            
             TabContainer.Visible = true
 
             if Description then
@@ -8147,10 +8132,6 @@ function Library:CreateWindow(WindowInfo)
                     ImageTransparency = 0.5,
                 }):Play()
             end
-            
-            -- Hide indicator for KeyTab
-            ActiveIndicator.Visible = false
-            
             TabContainer.Visible = false
 
             Window:HideTabInfo()
