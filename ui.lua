@@ -307,7 +307,7 @@ local Templates = {
         Title = "No Title",
         Footer = "No Footer",
         Position = UDim2.fromOffset(6, 6),
-        Size = UDim2.fromOffset(720, 600),
+        Size = UDim2.fromOffset(750, 630),  -- Default size matching screenshot
         IconSize = UDim2.fromOffset(30, 30),
         AutoShow = true,
         Center = true,
@@ -6606,15 +6606,17 @@ function Library:CreateWindow(WindowInfo)
         })
         Library:MakeDraggable(MainFrame, TopBar, false, true)
 
-        --// Title
+        --// Title - centered across full top bar
         TitleHolder = New("Frame", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(0, 250, 1, 0), -- Fixed width for logo+title
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            Position = UDim2.new(0.5, 0, 0.5, 0),  -- Center of TopBar
+            Size = UDim2.new(1, 0, 1, 0),           -- Full width so centering works
             Parent = TopBar,
         })
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
-            HorizontalAlignment = Enum.HorizontalAlignment.Center,
+            HorizontalAlignment = Enum.HorizontalAlignment.Center,  -- Center children
             VerticalAlignment = Enum.VerticalAlignment.Center,
             Padding = UDim.new(0, 6),
             Parent = TitleHolder,
@@ -6644,22 +6646,23 @@ function Library:CreateWindow(WindowInfo)
             WindowInfo.Title,
             Library.Scheme.Font,
             20,
-            TitleHolder.AbsoluteSize.X - (WindowInfo.Icon and WindowInfo.IconSize.X.Offset + 6 or 0) - 12
+            500 -- Wide enough for any reasonable title
         )
         WindowTitle = New("TextLabel", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(0, X, 1, 0),
+            AutomaticSize = Enum.AutomaticSize.X,
+            Size = UDim2.new(0, 0, 1, 0),
             Text = WindowInfo.Title,
             TextSize = 20,
             Parent = TitleHolder,
         })
 
-        --// Top Right Bar
+        --// Top Right Bar - hidden since title is centered full-width
         RightWrapper = New("Frame", {
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundTransparency = 1,
             Position = UDim2.new(1, -49, 0.5, 0),
-            Size = UDim2.new(1, -307, 1, -16), -- Adjust for new title width
+            Size = UDim2.new(0, 0, 1, -16), -- Zero width: not used with centered title
             Parent = TopBar,
         })
 
@@ -6851,11 +6854,16 @@ function Library:CreateWindow(WindowInfo)
         })
 
         --// Tabs \\--
-        -- Transparent tab bar - blends into window, buttons float on top
-        Tabs = New("Frame", {
-            BackgroundTransparency = 1, -- Fully transparent so it blends with main window
+        -- Transparent tab bar - blends into window, auto-scrolls if tabs overflow
+        Tabs = New("ScrollingFrame", {
+            BackgroundTransparency = 1,
             Position = UDim2.fromOffset(0, 49),
             Size = UDim2.new(1, 0, 0, 45),
+            CanvasSize = UDim2.fromScale(0, 0),
+            AutomaticCanvasSize = Enum.AutomaticSize.X,  -- Expand canvas as tabs are added
+            ScrollBarThickness = 0,                       -- Hide scrollbar, still scrollable
+            ScrollingDirection = Enum.ScrollingDirection.X,
+            ClipsDescendants = true,
             Parent = MainFrame,
         })
         
@@ -6871,8 +6879,8 @@ function Library:CreateWindow(WindowInfo)
         New("UIPadding", {
             PaddingLeft = UDim.new(0, 10),
             PaddingRight = UDim.new(0, 10),
-            PaddingTop = UDim.new(0, 4),
-            PaddingBottom = UDim.new(0, 4),
+            PaddingTop = UDim.new(0, 5),
+            PaddingBottom = UDim.new(0, 5),
             Parent = Tabs,
         })
         
@@ -7040,8 +7048,9 @@ function Library:CreateWindow(WindowInfo)
         do
             TabButton = New("TextButton", {
                 BackgroundColor3 = "MainColor",
-                BackgroundTransparency = 0.5,
-                Size = UDim2.new(0, 100, 0, 35), -- Fixed width for horizontal tabs
+                BackgroundTransparency = 0.7,
+                AutomaticSize = Enum.AutomaticSize.X,  -- Width auto-fits the label text
+                Size = UDim2.new(0, 0, 0, 33),         -- Height fixed, width auto
                 Text = "",
                 Parent = Tabs,
             })
@@ -7054,19 +7063,19 @@ function Library:CreateWindow(WindowInfo)
             
             local ButtonPadding = New("UIPadding", {
                 PaddingBottom = UDim.new(0, 6),
-                PaddingLeft = UDim.new(0, 8),
-                PaddingRight = UDim.new(0, 8),
+                PaddingLeft = UDim.new(0, 14),
+                PaddingRight = UDim.new(0, 14),
                 PaddingTop = UDim.new(0, 6),
                 Parent = TabButton,
             })
 
             TabLabel = New("TextLabel", {
                 BackgroundTransparency = 1,
-                Position = UDim2.fromOffset(0, 0),
-                Size = UDim2.fromScale(1, 1),
+                AutomaticSize = Enum.AutomaticSize.X,  -- Auto width
+                Size = UDim2.new(0, 0, 1, 0),
                 Text = Name,
                 TextSize = 13,
-                TextTransparency = 0.5,
+                TextTransparency = 0.45,
                 TextXAlignment = Enum.TextXAlignment.Center,
                 Visible = true,
                 Parent = TabButton,
@@ -7791,8 +7800,11 @@ function Library:CreateWindow(WindowInfo)
                 return
             end
 
+            TweenService:Create(TabButton, Library.TweenInfo, {
+                BackgroundTransparency = Hovering and 0.5 or 0.7,
+            }):Play()
             TweenService:Create(TabLabel, Library.TweenInfo, {
-                TextTransparency = Hovering and 0.25 or 0.5,
+                TextTransparency = Hovering and 0.2 or 0.45,
             }):Play()
             if TabIcon then
                 TweenService:Create(TabIcon, Library.TweenInfo, {
@@ -7807,7 +7819,7 @@ function Library:CreateWindow(WindowInfo)
             end
 
             TweenService:Create(TabButton, Library.TweenInfo, {
-                BackgroundTransparency = 0,
+                BackgroundTransparency = 0.3, -- Active: slightly visible MainColor background
             }):Play()
             TweenService:Create(TabLabel, Library.TweenInfo, {
                 TextTransparency = 0,
@@ -7834,10 +7846,10 @@ function Library:CreateWindow(WindowInfo)
 
         function Tab:Hide()
             TweenService:Create(TabButton, Library.TweenInfo, {
-                BackgroundTransparency = 1,
+                BackgroundTransparency = 0.7, -- Inactive: mostly transparent
             }):Play()
             TweenService:Create(TabLabel, Library.TweenInfo, {
-                TextTransparency = 0.5,
+                TextTransparency = 0.45,
             }):Play()
             if TabIcon then
                 TweenService:Create(TabIcon, Library.TweenInfo, {
