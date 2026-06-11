@@ -6579,6 +6579,23 @@ function Library:CreateWindow(WindowInfo)
         if WindowInfo.Center then
             MainFrame.Position = UDim2.new(0.5, -MainFrame.Size.X.Offset / 2, 0.5, -MainFrame.Size.Y.Offset / 2)
         end
+        
+        -- Add blur background effect
+        local BlurBackground = New("Frame", {
+            BackgroundColor3 = Color3.fromRGB(10, 10, 15),
+            BackgroundTransparency = 0.2,
+            Size = UDim2.new(1, 0, 1, 0),
+            ZIndex = 0,
+            Parent = MainFrame,
+        })
+        
+        local BlurGradient = Instance.new("UIGradient")
+        BlurGradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 20, 25)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 15))
+        })
+        BlurGradient.Rotation = 45
+        BlurGradient.Parent = BlurBackground
 
         --// Top Bar \\-
         local TopBar = New("Frame", {
@@ -6591,7 +6608,7 @@ function Library:CreateWindow(WindowInfo)
         --// Title
         TitleHolder = New("Frame", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(0, InitialLeftWidth, 1, 0),
+            Size = UDim2.new(0, 250, 1, 0), -- Fixed width for logo+title
             Parent = TopBar,
         })
         New("UIListLayout", {
@@ -6641,7 +6658,7 @@ function Library:CreateWindow(WindowInfo)
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundTransparency = 1,
             Position = UDim2.new(1, -49, 0.5, 0),
-            Size = UDim2.new(1, -InitialLeftWidth - 57 - 1, 1, -16),
+            Size = UDim2.new(1, -307, 1, -16), -- Adjust for new title width
             Parent = TopBar,
         })
 
@@ -6833,21 +6850,41 @@ function Library:CreateWindow(WindowInfo)
         })
 
         --// Tabs \\--
-        Tabs = New("ScrollingFrame", {
-            AutomaticCanvasSize = Enum.AutomaticSize.Y,
-            BackgroundColor3 = "BackgroundColor",
-            CanvasSize = UDim2.fromScale(0, 0),
+        -- Horizontal tab bar at top instead of sidebar
+        Tabs = New("Frame", {
+            BackgroundColor3 = "MainColor",
+            BackgroundTransparency = 0.3,
             Position = UDim2.fromOffset(0, 49),
-            ScrollBarThickness = 0,
-            Size = UDim2.new(0, InitialLeftWidth, 1, -150), -- Reduced to make room for user info
+            Size = UDim2.new(1, 0, 0, 45),
             Parent = MainFrame,
         })
+        
+        -- Add blur effect to tabs bar
+        local TabsBlur = Instance.new("UIGradient")
+        TabsBlur.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 30)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 15, 20))
+        })
+        TabsBlur.Rotation = 90
+        TabsBlur.Parent = Tabs
+        
         New("UIListLayout", {
+            FillDirection = Enum.FillDirection.Horizontal,
+            HorizontalAlignment = Enum.HorizontalAlignment.Left,
+            VerticalAlignment = Enum.VerticalAlignment.Center,
+            Padding = UDim.new(0, 8),
+            SortOrder = Enum.SortOrder.LayoutOrder,
+            Parent = Tabs,
+        })
+        
+        New("UIPadding", {
+            PaddingLeft = UDim.new(0, 10),
+            PaddingRight = UDim.new(0, 10),
             Parent = Tabs,
         })
         
         -- ─────────────────────────────────────────────────────────────
-        -- USER INFO PANEL AT BOTTOM OF SIDEBAR
+        -- USER INFO PANEL MOVED TO TOP RIGHT (NO SIDEBAR)
         -- ─────────────────────────────────────────────────────────────
         local UserInfoFrame = New("Frame", {
             BackgroundColor3 = "MainColor",
@@ -6911,8 +6948,8 @@ function Library:CreateWindow(WindowInfo)
                 return Library:GetBetterColor(Library.Scheme.BackgroundColor, 1)
             end,
             Name = "Container",
-            Position = UDim2.new(1, 0, 0, 49),
-            Size = UDim2.new(1, -InitialLeftWidth - 1, 1, -70),
+            Position = UDim2.new(0, 0, 0, 95), -- Below top bar + tab bar
+            Size = UDim2.new(1, 0, 1, -116), -- Full width, below tabs
             Parent = MainFrame,
         })
         New("UIPadding", {
