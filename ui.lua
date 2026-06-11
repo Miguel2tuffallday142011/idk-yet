@@ -6851,10 +6851,9 @@ function Library:CreateWindow(WindowInfo)
         })
 
         --// Tabs \\--
-        -- Horizontal tab bar at top instead of sidebar
+        -- Transparent tab bar - blends into window, buttons float on top
         Tabs = New("Frame", {
-            BackgroundColor3 = "MainColor",
-            BackgroundTransparency = 0,
+            BackgroundTransparency = 1, -- Fully transparent so it blends with main window
             Position = UDim2.fromOffset(0, 49),
             Size = UDim2.new(1, 0, 0, 45),
             Parent = MainFrame,
@@ -6864,7 +6863,7 @@ function Library:CreateWindow(WindowInfo)
             FillDirection = Enum.FillDirection.Horizontal,
             HorizontalAlignment = Enum.HorizontalAlignment.Left,
             VerticalAlignment = Enum.VerticalAlignment.Center,
-            Padding = UDim.new(0, 8),
+            Padding = UDim.new(0, 6),
             SortOrder = Enum.SortOrder.LayoutOrder,
             Parent = Tabs,
         })
@@ -6872,12 +6871,12 @@ function Library:CreateWindow(WindowInfo)
         New("UIPadding", {
             PaddingLeft = UDim.new(0, 10),
             PaddingRight = UDim.new(0, 10),
+            PaddingTop = UDim.new(0, 4),
+            PaddingBottom = UDim.new(0, 4),
             Parent = Tabs,
         })
         
-        -- ─────────────────────────────────────────────────────────────
-        -- USER INFO PANEL REMOVED FOR CLEANER LOOK
-        -- ─────────────────────────────────────────────────────────────
+        -- USER INFO PANEL REMOVED
 
         --// Container \\--
         Container = New("Frame", {
@@ -6985,29 +6984,16 @@ function Library:CreateWindow(WindowInfo)
     end
 
     function Window:SetCompact(State)
-        Window:SetSidebarWidth(State and WindowInfo.SidebarCompactWidth or LastExpandedWidth)
+        -- No-op for horizontal layout
     end
 
     function Window:GetSidebarWidth()
-        return Tabs.Size.X.Offset
+        return 0 -- No sidebar in horizontal layout
     end
 
     function Window:SetSidebarWidth(Width)
-        Width = math.clamp(Width, 48, MainFrame.Size.X.Offset - WindowInfo.MinContainerWidth - 1)
-
-        DividerLine.Position = UDim2.fromOffset(Width, 0)
-
-        TitleHolder.Size = UDim2.new(0, Width, 1, 0)
-        RightWrapper.Size = UDim2.new(1, -Width - 57 - 1, 1, -16)
-        Tabs.Size = UDim2.new(0, Width, 1, -70)
-        Container.Size = UDim2.new(1, -Width - 1, 1, -70)
-
-        if WindowInfo.EnableCompacting then
-            ApplyCompact()
-        end
-        if not IsCompact then
-            LastExpandedWidth = Width
-        end
+        -- No-op: horizontal layout, no sidebar to resize
+        -- Container and Tabs are full width
     end
 
     function Window:ShowTabInfo(Name, Description)
