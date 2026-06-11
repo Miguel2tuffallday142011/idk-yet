@@ -214,15 +214,15 @@ local Library = {
     OriginalMinSize = Vector2.new(480, 360),
     MinSize = Vector2.new(480, 360),
     DPIScale = 1,
-    CornerRadius = 4,
+    CornerRadius = 0,  -- Sharp corners like Kiciahook
     CornerRadiusDropdown = false, -- Temporary
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(10, 10, 10),    -- Darker (was 15)
-        MainColor = Color3.fromRGB(18, 18, 18),          -- Darker (was 25)
-        AccentColor = Color3.fromRGB(125, 85, 255),
-        OutlineColor = Color3.fromRGB(35, 35, 35),       -- Slightly darker (was 40)
+        BackgroundColor = Color3.fromRGB(8, 8, 8),       -- Very dark background
+        MainColor = Color3.fromRGB(18, 18, 18),          -- Dark panels
+        AccentColor = Color3.fromRGB(255, 145, 0),       -- Orange accent like Kiciahook
+        OutlineColor = Color3.fromRGB(32, 32, 32),       -- Subtle outlines
         FontColor = Color3.new(1, 1, 1),
         Font = Font.fromEnum(Enum.Font.Code),
 
@@ -315,7 +315,7 @@ local Templates = {
         SearchbarSize = UDim2.fromScale(1, 1),
         GlobalSearch = false,
         DisableSearch = true, -- Hide search bar by default
-        CornerRadius = 0,  -- Sharp corners
+        CornerRadius = 0,  -- Sharp corners like Kiciahook
         NotifySide = "Right",
         ShowCustomCursor = true,
         Font = Enum.Font.Code,
@@ -4455,7 +4455,7 @@ do
 
         local Holder = New("Frame", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 0, Info.Compact and 15 or 33),
+            Size = UDim2.new(1, 0, 0, Info.Compact and 12 or 28),  -- More compact sliders
             Visible = Slider.Visible,
             Parent = Container,
         })
@@ -4464,9 +4464,9 @@ do
         if not Info.Compact then
             SliderLabel = New("TextLabel", {
                 BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 0, 14),
+                Size = UDim2.new(1, 0, 0, 12),  -- Compact label height
                 Text = Slider.Text,
-                TextSize = 14,
+                TextSize = 13,  -- Smaller text
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = Holder,
             })
@@ -4477,7 +4477,7 @@ do
             AnchorPoint = Vector2.new(0, 1),
             BackgroundColor3 = "MainColor",
             Position = UDim2.fromScale(0, 1),
-            Size = UDim2.new(1, 0, 0, 15),
+            Size = UDim2.new(1, 0, 0, 12),  -- Compact slider bar
             Text = "",
             Parent = Holder,
         })
@@ -4491,7 +4491,7 @@ do
             BackgroundTransparency = 1,
             Size = UDim2.fromScale(1, 1),
             Text = "",
-            TextSize = 14,
+            TextSize = 12,  -- Smaller display text
             ZIndex = 2,
             Parent = Bar,
         })
@@ -6606,17 +6606,17 @@ function Library:CreateWindow(WindowInfo)
         })
         Library:MakeDraggable(MainFrame, TopBar, false, true)
 
-        --// Title - centered across full top bar
+        --// Title - left-aligned like Kiciahook
         TitleHolder = New("Frame", {
             BackgroundTransparency = 1,
-            AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.new(0.5, 0, 0.5, 0),  -- Center of TopBar
-            Size = UDim2.new(1, 0, 1, 0),           -- Full width so centering works
+            AnchorPoint = Vector2.new(0, 0.5),
+            Position = UDim2.new(0, 12, 0.5, 0),  -- Left side with padding
+            Size = UDim2.new(0.5, -12, 1, 0),     -- Left half of top bar
             Parent = TopBar,
         })
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
-            HorizontalAlignment = Enum.HorizontalAlignment.Center,  -- Center children
+            HorizontalAlignment = Enum.HorizontalAlignment.Left,  -- Left-align children
             VerticalAlignment = Enum.VerticalAlignment.Center,
             Padding = UDim.new(0, 6),
             Parent = TitleHolder,
