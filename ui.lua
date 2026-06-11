@@ -6893,8 +6893,9 @@ function Library:CreateWindow(WindowInfo)
             BackgroundColor3 = function()
                 return Library:GetBetterColor(Library.Scheme.BackgroundColor, 1)
             end,
+            ClipsDescendants = false,
             Name = "Container",
-            Position = UDim2.new(0, 0, 0, 95), -- Below top bar + tab bar
+            Position = UDim2.fromOffset(0, 95), -- Below top bar + tab bar
             Size = UDim2.new(1, 0, 1, -116), -- Full width, below tabs
             Parent = MainFrame,
         })
