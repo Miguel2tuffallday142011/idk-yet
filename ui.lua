@@ -219,10 +219,10 @@ local Library = {
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(15, 15, 15),
-        MainColor = Color3.fromRGB(25, 25, 25),
+        BackgroundColor = Color3.fromRGB(10, 10, 10),    -- Darker (was 15)
+        MainColor = Color3.fromRGB(18, 18, 18),          -- Darker (was 25)
         AccentColor = Color3.fromRGB(125, 85, 255),
-        OutlineColor = Color3.fromRGB(40, 40, 40),
+        OutlineColor = Color3.fromRGB(35, 35, 35),       -- Slightly darker (was 40)
         FontColor = Color3.new(1, 1, 1),
         Font = Font.fromEnum(Enum.Font.Code),
 
@@ -6545,14 +6545,14 @@ function Library:CreateWindow(WindowInfo)
         )
         Library:AddOutline(MainFrame)
         Library:MakeLine(MainFrame, {
-            Position = UDim2.fromOffset(0, 48),
+            Position = UDim2.fromOffset(0, 30), -- Line after smaller topbar
             Size = UDim2.new(1, 0, 0, 1),
         })
 
         DividerLine = New("Frame", {
             BackgroundColor3 = "OutlineColor",
-            Position = UDim2.fromOffset(0, 94), -- Horizontal line below tabs
-            Size = UDim2.new(1, 0, 0, 1), -- Full width, 1px tall
+            Position = UDim2.fromOffset(0, 68), -- Below both tab rows (30 + 38)
+            Size = UDim2.new(1, 0, 0, 1),
             Parent = MainFrame,
         })
 
@@ -6601,7 +6601,7 @@ function Library:CreateWindow(WindowInfo)
         --// Top Bar \\-
         local TopBar = New("Frame", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 0, 48),
+            Size = UDim2.new(1, 0, 0, 30), -- Reduced from 48 to 30
             Parent = MainFrame,
         })
         Library:MakeDraggable(MainFrame, TopBar, false, true)
@@ -6653,7 +6653,7 @@ function Library:CreateWindow(WindowInfo)
             AutomaticSize = Enum.AutomaticSize.X,
             Size = UDim2.new(0, 0, 1, 0),
             Text = WindowInfo.Title,
-            TextSize = 20,
+            TextSize = 14, -- Smaller title text (was 20)
             Parent = TitleHolder,
         })
 
@@ -6854,14 +6854,14 @@ function Library:CreateWindow(WindowInfo)
         })
 
         --// Tabs \\--
-        -- Transparent tab bar - blends into window, auto-scrolls if tabs overflow
+        -- Transparent tab bar - more compact style
         Tabs = New("ScrollingFrame", {
             BackgroundTransparency = 1,
-            Position = UDim2.fromOffset(0, 49),
-            Size = UDim2.new(1, 0, 0, 45),
+            Position = UDim2.fromOffset(0, 31), -- Right after topbar
+            Size = UDim2.new(1, 0, 0, 37),      -- Reduced height
             CanvasSize = UDim2.fromScale(0, 0),
-            AutomaticCanvasSize = Enum.AutomaticSize.X,  -- Expand canvas as tabs are added
-            ScrollBarThickness = 0,                       -- Hide scrollbar, still scrollable
+            AutomaticCanvasSize = Enum.AutomaticSize.X,
+            ScrollBarThickness = 0,
             ScrollingDirection = Enum.ScrollingDirection.X,
             ClipsDescendants = true,
             Parent = MainFrame,
@@ -6871,16 +6871,16 @@ function Library:CreateWindow(WindowInfo)
             FillDirection = Enum.FillDirection.Horizontal,
             HorizontalAlignment = Enum.HorizontalAlignment.Left,
             VerticalAlignment = Enum.VerticalAlignment.Center,
-            Padding = UDim.new(0, 6),
+            Padding = UDim.new(0, 4), -- Tighter spacing
             SortOrder = Enum.SortOrder.LayoutOrder,
             Parent = Tabs,
         })
         
         New("UIPadding", {
-            PaddingLeft = UDim.new(0, 10),
-            PaddingRight = UDim.new(0, 10),
-            PaddingTop = UDim.new(0, 5),
-            PaddingBottom = UDim.new(0, 5),
+            PaddingLeft = UDim.new(0, 8),
+            PaddingRight = UDim.new(0, 8),
+            PaddingTop = UDim.new(0, 3),
+            PaddingBottom = UDim.new(0, 3),
             Parent = Tabs,
         })
         
@@ -6894,8 +6894,8 @@ function Library:CreateWindow(WindowInfo)
             end,
             ClipsDescendants = false,
             Name = "Container",
-            Position = UDim2.fromOffset(0, 95), -- Below top bar + tab bar
-            Size = UDim2.new(1, 0, 1, -116), -- Full width, below tabs
+            Position = UDim2.fromOffset(0, 69), -- Below divider (68+1)
+            Size = UDim2.new(1, 0, 1, -90),     -- Adjusted for smaller header
             Parent = MainFrame,
         })
         New("UIPadding", {
@@ -7049,32 +7049,28 @@ function Library:CreateWindow(WindowInfo)
             TabButton = New("TextButton", {
                 BackgroundColor3 = "MainColor",
                 BackgroundTransparency = 0.7,
-                AutomaticSize = Enum.AutomaticSize.X,  -- Width auto-fits the label text
-                Size = UDim2.new(0, 0, 0, 33),         -- Height fixed, width auto
+                AutomaticSize = Enum.AutomaticSize.X,
+                Size = UDim2.new(0, 0, 0, 28), -- Smaller buttons (was 33)
                 Text = "",
                 Parent = Tabs,
             })
             
-            -- Add rounded corners to tab buttons
-            table.insert(Library.Corners, New("UICorner", {
-                CornerRadius = UDim.new(0, 6),
-                Parent = TabButton,
-            }))
+            -- Sharp corners (no UICorner)
             
             local ButtonPadding = New("UIPadding", {
-                PaddingBottom = UDim.new(0, 6),
-                PaddingLeft = UDim.new(0, 14),
-                PaddingRight = UDim.new(0, 14),
-                PaddingTop = UDim.new(0, 6),
+                PaddingBottom = UDim.new(0, 4),
+                PaddingLeft = UDim.new(0, 12),
+                PaddingRight = UDim.new(0, 12),
+                PaddingTop = UDim.new(0, 4),
                 Parent = TabButton,
             })
 
             TabLabel = New("TextLabel", {
                 BackgroundTransparency = 1,
-                AutomaticSize = Enum.AutomaticSize.X,  -- Auto width
+                AutomaticSize = Enum.AutomaticSize.X,
                 Size = UDim2.new(0, 0, 1, 0),
                 Text = Name,
-                TextSize = 13,
+                TextSize = 12, -- Slightly smaller text
                 TextTransparency = 0.45,
                 TextXAlignment = Enum.TextXAlignment.Center,
                 Visible = true,
