@@ -6884,62 +6884,8 @@ function Library:CreateWindow(WindowInfo)
         })
         
         -- ─────────────────────────────────────────────────────────────
-        -- USER INFO PANEL MOVED TO TOP RIGHT (NO SIDEBAR)
+        -- USER INFO PANEL REMOVED FOR CLEANER LOOK
         -- ─────────────────────────────────────────────────────────────
-        local UserInfoFrame = New("Frame", {
-            BackgroundColor3 = "MainColor",
-            AnchorPoint = Vector2.new(0, 1),
-            Position = UDim2.new(0, 0, 1, -21),
-            Size = UDim2.new(0, InitialLeftWidth, 0, 80),
-            Parent = MainFrame,
-        })
-        Library:AddOutline(UserInfoFrame)
-        table.insert(Library.Corners, New("UICorner", { 
-            CornerRadius = UDim.new(0, WindowInfo.CornerRadius), 
-            Parent = UserInfoFrame 
-        }))
-        
-        -- Get player's user ID for avatar headshot
-        local userId = Library.LocalPlayer.UserId
-        local avatarUrl = "rbxthumb://type=AvatarHeadShot&id=" .. userId .. "&w=150&h=150"
-        
-        -- Avatar Image
-        local UserAvatar = New("ImageLabel", {
-            Image = avatarUrl,
-            BackgroundTransparency = 1,
-            Position = UDim2.fromOffset(10, 10),
-            Size = UDim2.fromOffset(60, 60),
-            Parent = UserInfoFrame,
-        })
-        table.insert(Library.Corners, New("UICorner", { 
-            CornerRadius = UDim.new(0, 8), 
-            Parent = UserAvatar 
-        }))
-        
-        -- Username Label
-        local UsernameLabel = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Position = UDim2.fromOffset(78, 15),
-            Size = UDim2.new(1, -88, 0, 20),
-            Text = Library.LocalPlayer.Name,
-            TextColor3 = "FontColor",
-            TextSize = 16,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            TextTruncate = Enum.TextTruncate.AtEnd,
-            Parent = UserInfoFrame,
-        })
-        
-        -- "Freemium" Label
-        local FreemiumLabel = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Position = UDim2.fromOffset(78, 35),
-            Size = UDim2.new(1, -88, 0, 18),
-            Text = "Freemium",
-            TextColor3 = "AccentColor",
-            TextSize = 14,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            Parent = UserInfoFrame,
-        })
 
         --// Container \\--
         Container = New("Frame", {
@@ -7115,28 +7061,35 @@ function Library:CreateWindow(WindowInfo)
         do
             TabButton = New("TextButton", {
                 BackgroundColor3 = "MainColor",
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 0, 40),
+                BackgroundTransparency = 0.5,
+                Size = UDim2.new(0, 100, 0, 35), -- Fixed width for horizontal tabs
                 Text = "",
                 Parent = Tabs,
             })
+            
+            -- Add rounded corners to tab buttons
+            table.insert(Library.Corners, New("UICorner", {
+                CornerRadius = UDim.new(0, 6),
+                Parent = TabButton,
+            }))
+            
             local ButtonPadding = New("UIPadding", {
-                PaddingBottom = UDim.new(0, IsCompact and 6 or 11),
-                PaddingLeft = UDim.new(0, IsCompact and 6 or 12),
-                PaddingRight = UDim.new(0, IsCompact and 6 or 12),
-                PaddingTop = UDim.new(0, IsCompact and 6 or 11),
+                PaddingBottom = UDim.new(0, 6),
+                PaddingLeft = UDim.new(0, 8),
+                PaddingRight = UDim.new(0, 8),
+                PaddingTop = UDim.new(0, 6),
                 Parent = TabButton,
             })
 
             TabLabel = New("TextLabel", {
                 BackgroundTransparency = 1,
-                Position = UDim2.fromOffset(30, 0),
-                Size = UDim2.new(1, -30, 1, 0),
+                Position = UDim2.fromOffset(0, 0),
+                Size = UDim2.fromScale(1, 1),
                 Text = Name,
-                TextSize = 16,
+                TextSize = 13,
                 TextTransparency = 0.5,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                Visible = not IsCompact,
+                TextXAlignment = Enum.TextXAlignment.Center,
+                Visible = true,
                 Parent = TabButton,
             })
 
@@ -7148,8 +7101,9 @@ function Library:CreateWindow(WindowInfo)
                     ImageRectSize = Icon.ImageRectSize,
                     ImageTransparency = 0.5,
                     ScaleType = Enum.ScaleType.Fit,
-                    Size = UDim2.fromScale(1, 1),
-                    SizeConstraint = IsCompact and Enum.SizeConstraint.RelativeXY or Enum.SizeConstraint.RelativeYY,
+                    Size = UDim2.fromOffset(16, 16),
+                    Position = UDim2.new(0, -20, 0.5, -8),
+                    Visible = false, -- Hide icon in horizontal layout
                     Parent = TabButton,
                 })
             end
