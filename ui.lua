@@ -6550,8 +6550,8 @@ function Library:CreateWindow(WindowInfo)
 
         DividerLine = New("Frame", {
             BackgroundColor3 = "OutlineColor",
-            Position = UDim2.fromOffset(InitialLeftWidth, 0),
-            Size = UDim2.new(0, 1, 1, -21),
+            Position = UDim2.fromOffset(0, 94), -- Horizontal line below tabs
+            Size = UDim2.new(1, 0, 0, 1), -- Full width, 1px tall
             Parent = MainFrame,
         })
 
