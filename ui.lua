@@ -7051,17 +7051,21 @@ function Library:CreateWindow(WindowInfo)
                 BackgroundColor3 = "MainColor",
                 BackgroundTransparency = 0.7,
                 AutomaticSize = Enum.AutomaticSize.X,
-                Size = UDim2.new(0, 0, 0, 28), -- Smaller buttons (was 33)
+                Size = UDim2.new(0, 0, 0, 28),
                 Text = "",
+                ClipsDescendants = false, -- Allow indicator to not be clipped
                 Parent = Tabs,
             })
             
-            -- Add active indicator line (accent color, top of button)
+            -- Indicator: child of button, no padding offset needed since ClipsDescendants=false
+            -- UIPadding does NOT affect non-layout-managed children's Position/Size
+            -- So Size=1,0 means 100% of the button's OUTER width (before padding is applied to children)
             ActiveIndicator = New("Frame", {
                 BackgroundColor3 = "AccentColor",
-                Size = UDim2.new(1, 0, 0, 2), -- 2px tall line
-                Position = UDim2.new(0, 0, 0, 0), -- Top of button
-                Visible = false, -- Hidden by default
+                Size = UDim2.new(1, 0, 0, 2),    -- Full button width
+                Position = UDim2.new(0, 0, 0, 0), -- Top edge of button
+                Visible = false,
+                ZIndex = 10,
                 Parent = TabButton,
             })
             
@@ -7933,8 +7937,20 @@ function Library:CreateWindow(WindowInfo)
                 BackgroundTransparency = 1,
                 Size = UDim2.new(1, 0, 0, 40),
                 Text = "",
+                ClipsDescendants = false,
                 Parent = Tabs,
             })
+            
+            -- Active indicator line for KeyTab
+            ActiveIndicator = New("Frame", {
+                BackgroundColor3 = "AccentColor",
+                Size = UDim2.new(1, 0, 0, 2),
+                Position = UDim2.new(0, 0, 0, 0),
+                Visible = false,
+                ZIndex = 10,
+                Parent = TabButton,
+            })
+            
             local ButtonPadding = New("UIPadding", {
                 PaddingBottom = UDim.new(0, IsCompact and 6 or 11),
                 PaddingLeft = UDim.new(0, IsCompact and 6 or 12),
@@ -7972,6 +7988,7 @@ function Library:CreateWindow(WindowInfo)
                 Label = TabLabel,
                 Padding = ButtonPadding,
                 Icon = TabIcon,
+                Indicator = ActiveIndicator,
             })
 
             --// Tab Container \\--
