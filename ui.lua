@@ -314,6 +314,7 @@ local Templates = {
         Resizable = true,
         SearchbarSize = UDim2.fromScale(1, 1),
         GlobalSearch = false,
+        DisableSearch = true, -- Hide search bar by default
         CornerRadius = 4,
         NotifySide = "Right",
         ShowCustomCursor = true,
@@ -6722,7 +6723,7 @@ function Library:CreateWindow(WindowInfo)
         SearchBox = New("TextBox", {
             BackgroundColor3 = "MainColor",
             PlaceholderText = "Search",
-            Size = WindowInfo.SearchbarSize,
+            Size = UDim2.fromOffset(0, 0), -- Zero size to make it truly invisible
             TextScaled = true,
             Visible = false, -- Hidden search bar
             Parent = RightWrapper,
@@ -6858,9 +6859,6 @@ function Library:CreateWindow(WindowInfo)
             Size = UDim2.new(1, 0, 0, 45),
             Parent = MainFrame,
         })
-        
-        -- Remove dark gradient, use solid MainColor
-        -- No UIGradient added
         
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
@@ -7016,14 +7014,14 @@ function Library:CreateWindow(WindowInfo)
         CurrentTabLabel.Text = Name
         CurrentTabDescription.Text = Description
 
-        if IsDefaultSearchbarSize then
+        if not WindowInfo.DisableSearch and IsDefaultSearchbarSize and SearchBox then
             SearchBox.Size = UDim2.fromScale(0.5, 1)
         end
         CurrentTabInfo.Visible = true
     end
     function Window:HideTabInfo()
         CurrentTabInfo.Visible = false
-        if IsDefaultSearchbarSize then
+        if not WindowInfo.DisableSearch and IsDefaultSearchbarSize and SearchBox then
             SearchBox.Size = UDim2.fromScale(1, 1)
         end
     end
@@ -8728,9 +8726,11 @@ function Library:CreateWindow(WindowInfo)
     end
 
     --// Execution \\--
-    SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-        Library:UpdateSearch(SearchBox.Text)
-    end)
+    if not WindowInfo.DisableSearch and SearchBox then
+        SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+            Library:UpdateSearch(SearchBox.Text)
+        end)
+    end
 
     Library:GiveSignal(UserInputService.InputBegan:Connect(function(Input: InputObject)
         if Library.Unloaded then
