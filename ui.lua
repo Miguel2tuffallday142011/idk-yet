@@ -6724,7 +6724,7 @@ function Library:CreateWindow(WindowInfo)
             PlaceholderText = "Search",
             Size = WindowInfo.SearchbarSize,
             TextScaled = true,
-            Visible = not (WindowInfo.DisableSearch or false),
+            Visible = false, -- Hidden search bar
             Parent = RightWrapper,
         })
         New("UIFlexItem", {
@@ -6853,20 +6853,14 @@ function Library:CreateWindow(WindowInfo)
         -- Horizontal tab bar at top instead of sidebar
         Tabs = New("Frame", {
             BackgroundColor3 = "MainColor",
-            BackgroundTransparency = 0.3,
+            BackgroundTransparency = 0,
             Position = UDim2.fromOffset(0, 49),
             Size = UDim2.new(1, 0, 0, 45),
             Parent = MainFrame,
         })
         
-        -- Add blur effect to tabs bar
-        local TabsBlur = Instance.new("UIGradient")
-        TabsBlur.Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 30)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 15, 20))
-        })
-        TabsBlur.Rotation = 90
-        TabsBlur.Parent = Tabs
+        -- Remove dark gradient, use solid MainColor
+        -- No UIGradient added
         
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
