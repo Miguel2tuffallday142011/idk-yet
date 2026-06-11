@@ -7039,6 +7039,7 @@ function Library:CreateWindow(WindowInfo)
         local TabButton: TextButton
         local TabLabel
         local TabIcon
+        local ActiveIndicator -- Declare at function scope so Show/Hide can access it
 
         local TabContainer
         local TabLeft
@@ -7056,7 +7057,7 @@ function Library:CreateWindow(WindowInfo)
             })
             
             -- Add active indicator line (accent color, top of button)
-            local ActiveIndicator = New("Frame", {
+            ActiveIndicator = New("Frame", {
                 BackgroundColor3 = "AccentColor",
                 Size = UDim2.new(1, 0, 0, 2), -- 2px tall line
                 Position = UDim2.new(0, 0, 0, 0), -- Top of button
@@ -7921,6 +7922,7 @@ function Library:CreateWindow(WindowInfo)
         local TabButton: TextButton
         local TabLabel
         local TabIcon
+        local ActiveIndicator -- Declare at function scope for KeyTab
 
         local TabContainer
 
