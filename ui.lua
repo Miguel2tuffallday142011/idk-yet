@@ -219,9 +219,9 @@ local Library = {
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(8, 8, 8),       -- Very dark background
-        MainColor = Color3.fromRGB(18, 18, 18),          -- Dark panels
-        AccentColor = Color3.fromRGB(255, 145, 0),       -- Orange accent like Kiciahook
+        BackgroundColor = Color3.fromRGB(15, 15, 15),     -- Match sidebar
+        MainColor = Color3.fromRGB(15, 15, 15),           -- Match sidebar
+        AccentColor = Color3.fromRGB(255, 145, 0),        -- Orange accent
         OutlineColor = Color3.fromRGB(32, 32, 32),       -- Subtle outlines
         FontColor = Color3.new(1, 1, 1),
         Font = Font.fromEnum(Enum.Font.Code),
@@ -6520,9 +6520,7 @@ function Library:CreateWindow(WindowInfo)
         Library.KeybindFrame.Visible = false
 
         MainFrame = New("TextButton", {
-            BackgroundColor3 = function()
-                return Library:GetBetterColor(Library.Scheme.BackgroundColor, -1)
-            end,
+            BackgroundColor3 = Color3.fromRGB(15, 15, 15),
             Name = "Main",
             Text = "",
             Position = WindowInfo.Position,
@@ -6621,33 +6619,27 @@ function Library:CreateWindow(WindowInfo)
             Parent = TitleHolder,
         })
 
-        if WindowInfo.Icon then
-            local Icon = Library:GetCustomIcon(WindowInfo.Icon)
-            WindowIcon = New("ImageLabel", {
-                Image = Icon.Url,
-                ImageRectOffset = Icon.ImageRectOffset,
-                ImageRectSize = Icon.ImageRectSize,
-                Size = WindowInfo.IconSize,
-                Parent = TitleHolder,
-            })
-        else
-            WindowIcon = New("TextLabel", {
-                BackgroundTransparency = 1,
-                Size = WindowInfo.IconSize,
-                Text = WindowInfo.Title:sub(1, 1),
-                TextScaled = true,
-                Visible = false,
-                Parent = TitleHolder,
-            })
-        end
+        -- "C" logo label (shown instead of icon/title)
+        WindowIcon = New("TextLabel", {
+            BackgroundTransparency = 1,
+            Size = UDim2.fromOffset(40, 40),
+            Text = "C",
+            TextColor3 = Color3.new(1, 1, 1),
+            TextScaled = true,
+            FontFace = Font.fromEnum(Enum.Font.GothamBold),
+            ZIndex = 4,
+            Parent = TitleHolder,
+        })
 
+        -- Hidden compat stub (WindowTitle still needs to exist)
         WindowTitle = New("TextLabel", {
             BackgroundTransparency = 1,
             AutomaticSize = Enum.AutomaticSize.X,
-            Size = UDim2.new(0, 0, 0, 20),
+            Size = UDim2.fromOffset(0, 0),
             Text = WindowInfo.Title,
             TextSize = 16,
             FontFace = Font.fromEnum(Enum.Font.GothamBold),
+            Visible = false,
             Parent = TitleHolder,
         })
 
@@ -6875,9 +6867,7 @@ function Library:CreateWindow(WindowInfo)
         --// Content Container (right of sidebar) \\--
         Container = New("Frame", {
             AnchorPoint = Vector2.new(0, 0),
-            BackgroundColor3 = function()
-                return Library:GetBetterColor(Library.Scheme.BackgroundColor, 1)
-            end,
+            BackgroundColor3 = Color3.fromRGB(15, 15, 15),
             ClipsDescendants = false,
             Name = "Container",
             Position = UDim2.fromOffset(SidebarWidth, 0),
