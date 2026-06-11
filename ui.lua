@@ -219,10 +219,10 @@ local Library = {
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(15, 15, 15),     -- Match sidebar
-        MainColor = Color3.fromRGB(15, 15, 15),           -- Match sidebar
-        AccentColor = Color3.fromRGB(255, 145, 0),        -- Orange accent
-        OutlineColor = Color3.fromRGB(32, 32, 32),       -- Subtle outlines
+        BackgroundColor = Color3.fromRGB(15, 15, 15),
+        MainColor = Color3.fromRGB(15, 15, 15),
+        AccentColor = Color3.fromRGB(255, 145, 0),
+        OutlineColor = Color3.fromRGB(22, 22, 22),
         FontColor = Color3.new(1, 1, 1),
         Font = Font.fromEnum(Enum.Font.Code),
 
@@ -6587,7 +6587,7 @@ function Library:CreateWindow(WindowInfo)
         })
         -- Sidebar right border
         New("Frame", {
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+            BackgroundColor3 = Color3.fromRGB(22, 22, 22),
             BorderSizePixel = 0,
             Position = UDim2.new(1, -1, 0, 0),
             Size = UDim2.new(0, 1, 1, 0),
@@ -6622,11 +6622,11 @@ function Library:CreateWindow(WindowInfo)
         -- "C" logo label (shown instead of icon/title)
         WindowIcon = New("TextLabel", {
             BackgroundTransparency = 1,
-            Size = UDim2.fromOffset(40, 40),
+            Size = UDim2.fromOffset(44, 44),
             Text = "C",
             TextColor3 = Color3.new(1, 1, 1),
             TextScaled = true,
-            FontFace = Font.fromEnum(Enum.Font.GothamBold),
+            FontFace = Font.fromEnum(Enum.Font.SourceSansBold),
             ZIndex = 4,
             Parent = TitleHolder,
         })
@@ -6645,7 +6645,7 @@ function Library:CreateWindow(WindowInfo)
 
         -- Thin separator line below logo area
         New("Frame", {
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+            BackgroundColor3 = Color3.fromRGB(22, 22, 22),
             BorderSizePixel = 0,
             Position = UDim2.new(0, 10, 0, 70),
             Size = UDim2.new(1, -20, 0, 1),
@@ -6795,7 +6795,7 @@ function Library:CreateWindow(WindowInfo)
         --// User Profile Section \\--
         local ProfileFrame = New("Frame", {
             AnchorPoint = Vector2.new(0, 1),
-            BackgroundColor3 = Color3.fromRGB(18, 18, 18),
+            BackgroundColor3 = Color3.fromRGB(15, 15, 15),
             BorderSizePixel = 0,
             Position = UDim2.new(0, 0, 1, 0),
             Size = UDim2.new(1, 0, 0, 70),
@@ -6803,14 +6803,14 @@ function Library:CreateWindow(WindowInfo)
             Parent = Sidebar,
         })
         New("Frame", {
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+            BackgroundColor3 = Color3.fromRGB(22, 22, 22),
             BorderSizePixel = 0,
             Size = UDim2.new(1, 0, 0, 1),
             ZIndex = 4,
             Parent = ProfileFrame,
         })
         local AvatarFrame = New("Frame", {
-            BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+            BackgroundColor3 = Color3.fromRGB(30, 30, 30),
             BorderSizePixel = 0,
             Position = UDim2.fromOffset(10, 15),
             Size = UDim2.fromOffset(36, 36),
