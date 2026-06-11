@@ -6647,7 +6647,7 @@ function Library:CreateWindow(WindowInfo)
             Size = UDim2.new(0, 0, 0, 20),
             Text = WindowInfo.Title,
             TextSize = 16,
-            Font = Enum.Font.GothamBold,
+            FontFace = Font.fromEnum(Enum.Font.GothamBold),
             Parent = TitleHolder,
         })
 
@@ -6754,16 +6754,18 @@ function Library:CreateWindow(WindowInfo)
             end)
         end
 
-        New("ImageLabel", {
-            Image = ResizeIcon and ResizeIcon.Url or "",
-            ImageColor3 = "FontColor",
-            ImageRectOffset = ResizeIcon and ResizeIcon.ImageRectOffset or Vector2.zero,
-            ImageRectSize = ResizeIcon and ResizeIcon.ImageRectSize or Vector2.zero,
-            ImageTransparency = 0.5,
-            Position = UDim2.fromOffset(2, 2),
-            Size = UDim2.new(1, -4, 1, -4),
-            Parent = ResizeButton,
-        })
+        if ResizeButton then
+            New("ImageLabel", {
+                Image = ResizeIcon and ResizeIcon.Url or "",
+                ImageColor3 = "FontColor",
+                ImageRectOffset = ResizeIcon and ResizeIcon.ImageRectOffset or Vector2.zero,
+                ImageRectSize = ResizeIcon and ResizeIcon.ImageRectSize or Vector2.zero,
+                ImageTransparency = 0.5,
+                Position = UDim2.fromOffset(2, 2),
+                Size = UDim2.new(1, -4, 1, -4),
+                Parent = ResizeButton,
+            })
+        end
 
         --// Sidebar Nav (vertical tabs) \\--
         Tabs = New("ScrollingFrame", {
@@ -6839,7 +6841,7 @@ function Library:CreateWindow(WindowInfo)
             Text = LocalPlayer.Name,
             TextColor3 = Color3.new(1, 1, 1),
             TextSize = 13,
-            Font = Enum.Font.GothamSemibold,
+            FontFace = Font.fromEnum(Enum.Font.GothamSemibold),
             TextXAlignment = Enum.TextXAlignment.Left,
             ZIndex = 4,
             Parent = ProfileFrame,
@@ -6851,7 +6853,7 @@ function Library:CreateWindow(WindowInfo)
             Text = "@" .. tostring(LocalPlayer.UserId),
             TextColor3 = Color3.fromRGB(120, 120, 120),
             TextSize = 11,
-            Font = Enum.Font.Gotham,
+            FontFace = Font.fromEnum(Enum.Font.Gotham),
             TextXAlignment = Enum.TextXAlignment.Left,
             ZIndex = 4,
             Parent = ProfileFrame,
@@ -6864,7 +6866,7 @@ function Library:CreateWindow(WindowInfo)
             Text = "USER",
             TextColor3 = Color3.new(1, 1, 1),
             TextSize = 9,
-            Font = Enum.Font.GothamBold,
+            FontFace = Font.fromEnum(Enum.Font.GothamBold),
             ZIndex = 4,
             Parent = ProfileFrame,
         })
@@ -6932,7 +6934,9 @@ function Library:CreateWindow(WindowInfo)
         Library.CornerRadius = Radius
         WindowInfo.CornerRadius = Radius
 
-        ResizeButton.Position = UDim2.new(1, -Radius / 4, 0, 0)
+        if ResizeButton then
+            ResizeButton.Position = UDim2.new(1, -Radius / 4, 0, 0)
+        end
         BottomBackground.Size = UDim2.new(1, 0, 0, 20 + Radius)
 
         for _, Tab in Library.Tabs do
@@ -7086,7 +7090,7 @@ function Library:CreateWindow(WindowInfo)
                 Text = Name,
                 TextColor3 = Color3.fromRGB(180, 180, 180),
                 TextSize = 14,
-                Font = Enum.Font.Gotham,
+                FontFace = Font.fromEnum(Enum.Font.Gotham),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 ZIndex = 5,
                 Parent = TabButton,
