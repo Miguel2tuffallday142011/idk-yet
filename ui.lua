@@ -6619,17 +6619,30 @@ function Library:CreateWindow(WindowInfo)
             Parent = TitleHolder,
         })
 
-        -- "C" logo label (shown instead of icon/title)
-        WindowIcon = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Size = UDim2.fromOffset(44, 44),
-            Text = "C",
-            TextColor3 = Color3.new(1, 1, 1),
-            TextScaled = true,
-            FontFace = Font.fromEnum(Enum.Font.SourceSansBold),
-            ZIndex = 4,
-            Parent = TitleHolder,
-        })
+        -- Logo image (replace rbxassetid with your own when ready)
+        -- Falls back to bold "C" text until image is provided
+        local LogoImageId = "rbxassetid://0" -- << paste your asset id here
+        if LogoImageId ~= "rbxassetid://0" then
+            WindowIcon = New("ImageLabel", {
+                BackgroundTransparency = 1,
+                Size = UDim2.fromOffset(44, 44),
+                Image = LogoImageId,
+                ScaleType = Enum.ScaleType.Fit,
+                ZIndex = 4,
+                Parent = TitleHolder,
+            })
+        else
+            WindowIcon = New("TextLabel", {
+                BackgroundTransparency = 1,
+                Size = UDim2.fromOffset(44, 44),
+                Text = "C",
+                TextColor3 = Color3.new(1, 1, 1),
+                TextScaled = true,
+                FontFace = Font.fromEnum(Enum.Font.Arial),
+                ZIndex = 4,
+                Parent = TitleHolder,
+            })
+        end
 
         -- Hidden compat stub (WindowTitle still needs to exist)
         WindowTitle = New("TextLabel", {
@@ -6831,7 +6844,7 @@ function Library:CreateWindow(WindowInfo)
             Position = UDim2.fromOffset(52, 12),
             Size = UDim2.new(1, -60, 0, 18),
             Text = LocalPlayer.Name,
-            TextColor3 = Color3.new(1, 1, 1),
+            TextColor3 = Color3.fromRGB(160, 160, 160),
             TextSize = 13,
             FontFace = Font.fromEnum(Enum.Font.GothamSemibold),
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -6851,12 +6864,12 @@ function Library:CreateWindow(WindowInfo)
             Parent = ProfileFrame,
         })
         local BadgeLabel = New("TextLabel", {
-            BackgroundColor3 = Color3.fromRGB(220, 38, 38),
+            BackgroundColor3 = Color3.fromRGB(50, 50, 50),
             BorderSizePixel = 0,
             Position = UDim2.fromOffset(52, 48),
             Size = UDim2.fromOffset(40, 16),
             Text = "USER",
-            TextColor3 = Color3.new(1, 1, 1),
+            TextColor3 = Color3.fromRGB(160, 160, 160),
             TextSize = 9,
             FontFace = Font.fromEnum(Enum.Font.GothamBold),
             ZIndex = 4,
@@ -7041,7 +7054,7 @@ function Library:CreateWindow(WindowInfo)
                 BackgroundColor3 = Color3.fromRGB(185, 28, 28),
                 BorderSizePixel = 0,
                 Size = UDim2.new(0, 3, 1, 0),
-                Position = UDim2.new(0, 0, 0, 0),
+                Position = UDim2.new(0, -12, 0, 0), -- escape padding to sit on true left edge
                 Visible = false,
                 ZIndex = 5,
                 Parent = TabButton,
